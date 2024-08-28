@@ -1,0 +1,6 @@
+-cp .project
+-cp src
+
+-lib blok.bridge
+
+--run Project

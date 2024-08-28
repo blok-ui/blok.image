@@ -1,0 +1,17 @@
+{
+  "name": "blok.image",
+  "license": "MIT",
+  "classPath": "src",
+  "tags": [
+    "ui"
+  ],
+  "contributors": [
+    "wartman"
+  ],
+  "releasenote": "First release",
+  "version": "0.0.1",
+  "url": "https://github.com/blok-ui/blok.image",
+  "dependencies": {
+    "blok.core": "0.9.1"
+  }
+}

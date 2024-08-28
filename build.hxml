@@ -1,0 +1,4 @@
+-cp src
+
+-lib blok.core
+-lib blok.bridge

@@ -1,0 +1,12 @@
+# THIS IS A GENERATED FILE. DO NOT EDIT.
+
+-cp example/src
+-lib blok.image
+-D analyzer-optimize
+-dce full
+--debug
+-lib blok.bridge
+-cp .bridge
+-lib kit.file
+--macro blok.bridge.macro.IslandIntrospector.run()
+-main BridgeGenerate
