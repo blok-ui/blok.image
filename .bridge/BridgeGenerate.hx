@@ -13,7 +13,7 @@ function main() {
 		})
 	});
 	blok.bridge.Bridge.generate(app, () -> ImageExample.node({}), [
-		blok.image.bridge.ProcessImages.fromJson({"destination":"/assets/images","engine":"vips","thumbSize":200,"mediumSize":800}),
+		blok.image.bridge.ProcessImages.fromJson({"destination":"/assets/images","engine":"vips"}),
     new blok.bridge.plugin.IncludeClientApp({src: "/assets/app-v0_0_1.js", minify: false}),
     new blok.bridge.plugin.OutputHtml({strategy: DirectoryWithIndexHtmlFile})
 	]);

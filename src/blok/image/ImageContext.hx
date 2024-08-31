@@ -3,6 +3,7 @@ package blok.image;
 import blok.debug.Debug;
 import blok.context.Context;
 
+using Lambda;
 using haxe.io.Path;
 using kit.Hash;
 
@@ -21,8 +22,17 @@ class ImageContext implements Context {
 		this.destination = options.destination;
 	}
 
-	public function add(entry) {
-		entries.push(entry);
+	public inline function register(source:String, size:ImageSize):ImageEntry {
+		var path = generateImagePath(source, size);
+		return entries.find(entry -> entry.path == path) ?? {
+			var entry = new ImageEntry({
+				source: source,
+				size: size,
+				path: path
+			});
+			entries.push(entry);
+			entry;
+		}
 	}
 
 	public function getEntries() {

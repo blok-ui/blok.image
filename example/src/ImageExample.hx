@@ -14,6 +14,11 @@ class ImageExample extends Component {
 				}))
 				.child(Image.node({
 					src: 'example/data/images/test.png',
+					size: ImageSize.Crop(50, 100),
+					alt: 'test'
+				}))
+				.child(Image.node({
+					src: 'example/data/images/test.png',
 					size: ImageSize.Full,
 					alt: 'test'
 				}))

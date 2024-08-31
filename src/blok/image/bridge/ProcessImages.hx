@@ -14,8 +14,6 @@ using haxe.io.Path;
 
 class ProcessImages implements Plugin {
 	@:constant final destination:String = '/assets/images';
-	@:constant final mediumSize:Int = 800;
-	@:constant final thumbSize:Int = 200;
 	@:constant final engine:ImageEngine = Vips;
 
 	var context:Null<ImageContext> = null;
@@ -42,7 +40,7 @@ class ProcessImages implements Plugin {
 		var out = app.output.directory(destination);
 		return Task.parallel(
 			app.fs.file(image.source).getMeta(),
-			out.file(image.dest).getMeta()
+			out.file(image.path).getMeta()
 		).next(files -> {
 			switch files {
 				case [source, dest] if (source.created.getTime() > dest.created.getTime()):
@@ -62,7 +60,7 @@ class ProcessImages implements Plugin {
 
 	function processImage(app:App, image:ImageEntry):Task<Nothing> {
 		return app.output.getMeta().next(meta -> {
-			var out = Path.join([meta.path, image.dest]);
+			var out = Path.join([meta.path, image.path]);
 			switch image.size {
 				case Full:
 					app.fs.file(image.source)
@@ -75,13 +73,6 @@ class ProcessImages implements Plugin {
 						height: size,
 						crop: false
 					}).next(_ -> Task.nothing());
-				// case Thumbnail:
-				// 	image.source.process(out, {
-				// 		engine: engine,
-				// 		width: thumbSize,
-				// 		height: thumbSize,
-				// 		crop: true
-				// 	}).next(_ -> Task.nothing());
 				case Crop(x, y):
 					image.source.process(out, {
 						engine: engine,

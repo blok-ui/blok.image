@@ -1,5 +1,5 @@
--cp .project
 -cp src
+-cp example
 
 -lib blok.bridge
 

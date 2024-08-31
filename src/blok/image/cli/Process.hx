@@ -7,18 +7,6 @@ import js.node.ChildProcess;
 using Kit;
 
 class Process {
-	public static function registerCloseHandler(close:() -> Void) {
-		#if nodejs
-		var readline = js.node.Readline.createInterface({
-			input: js.Node.process.stdin,
-			output: js.Node.process.stdout
-		});
-		readline.once('close', close);
-		#else
-		throw new haxe.exceptions.NotImplementedException();
-		#end
-	}
-
 	final task:Task<Int>;
 
 	public function new(cmd:String, args:Array<String>) {

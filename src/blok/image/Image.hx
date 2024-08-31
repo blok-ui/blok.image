@@ -9,19 +9,14 @@ class Image extends Component {
 	@:observable final alt:String;
 	@:observable final size:ImageSize = ImageSize.Full;
 
+	// @todo: Hm this won't work inside Islands.
+	// How can we send Context to the client?
 	function render():Child {
-		var images = ImageContext.from(this);
-		var dest = images.generateImagePath(src(), size());
-
-		ImageContext.from(this).add(new ImageEntry({
-			source: src(),
-			size: size(),
-			dest: dest
-		}));
+		var image = ImageContext.from(this).register(src(), size());
 
 		return Html.img({
 			className: className,
-			src: dest,
+			src: image.path,
 			alt: alt
 		});
 	}
