@@ -1,8 +1,6 @@
-# @install: lix --silent download "gh://github.com/blok-ui/blok.bridge#4da10de545285132aa716d8a2822b6664c780bf9" into blok.bridge/0.0.2/github/4da10de545285132aa716d8a2822b6664c780bf9
+# @install: lix --silent download "gh://github.com/blok-ui/blok.bridge#ce99c1ff5803f798a1f596e80062d2aa1d0ce7a4" into blok.bridge/0.1.0/github/ce99c1ff5803f798a1f596e80062d2aa1d0ce7a4
 -lib blok.core
 -lib blok.router
--lib hotdish
 -lib kit.file
--lib toml
--cp ${HAXE_LIBCACHE}/blok.bridge/0.0.2/github/4da10de545285132aa716d8a2822b6664c780bf9/src
--D blok.bridge=0.0.2
+-cp ${HAXE_LIBCACHE}/blok.bridge/0.1.0/github/ce99c1ff5803f798a1f596e80062d2aa1d0ce7a4/src
+-D blok.bridge=0.1.0

@@ -1,6 +1,0 @@
--cp src
--cp example
-
--lib blok.bridge
-
---run Project

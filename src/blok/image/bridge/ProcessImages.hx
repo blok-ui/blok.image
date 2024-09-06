@@ -1,45 +1,36 @@
 package blok.image.bridge;
 
-#if !blok.bridge
-#error "Block Bridge is required to use this plugin"
-#end
-import blok.bridge.*;
 import blok.context.Provider;
-import blok.html.server.*;
-import blok.ui.*;
+import blok.data.Structure;
+import blok.bridge.*;
 
 using Kit;
 using blok.image.ImageGenerator;
 using haxe.io.Path;
 
-class ProcessImages implements Plugin {
+class ProcessImages extends Structure implements Plugin {
 	@:constant final destination:String = '/assets/images';
 	@:constant final engine:ImageEngine = Vips;
 
-	var context:Null<ImageContext> = null;
+	public function register(bridge:Bridge) {
+		var context = new ImageContext({destination: destination});
 
-	public function render(app:App, root:Child):Child {
-		return Provider.provide(() -> context = new ImageContext({
-			destination: destination
-		})).child(_ -> root);
+		bridge.events.rendering.add(event -> {
+			event.apply(child -> Provider.provide(() -> context).child(_ -> child));
+		});
+
+		bridge.events.outputting.add(queue -> {
+			var task = Task
+				.parallel(...[for (image in context.getEntries()) handleImage(bridge, image)])
+				.next(_ -> Task.nothing());
+			queue.enqueue(task);
+		});
 	}
 
-	public function visited(app:App, path:String, document:NodePrimitive) {}
-
-	public function output(app:App):Task<Nothing> {
-		return Task
-			.parallel(...[for (image in context.getEntries()) handleImage(app, image)])
-			.next(_ -> Task.nothing());
-	}
-
-	public function cleanup():Void {
-		// @todo: remove old images?
-	}
-
-	function handleImage(app:App, image:ImageEntry):Task<Nothing> {
-		var out = app.output.directory(destination);
+	function handleImage(bridge:Bridge, image:ImageEntry):Task<Nothing> {
+		var out = bridge.output.directory(destination);
 		return Task.parallel(
-			app.fs.file(image.source).getMeta(),
+			bridge.fs.file(image.source).getMeta(),
 			out.file(image.path).getMeta()
 		).next(files -> {
 			switch files {
@@ -52,18 +43,18 @@ class ProcessImages implements Plugin {
 			.recover(_ -> Future.immediate(true))
 			.flatMap(shouldGenerate -> switch shouldGenerate {
 				case true:
-					processImage(app, image);
+					processImage(bridge, image);
 				case false:
 					Task.nothing();
 			});
 	}
 
-	function processImage(app:App, image:ImageEntry):Task<Nothing> {
-		return app.output.getMeta().next(meta -> {
+	function processImage(bridge:Bridge, image:ImageEntry):Task<Nothing> {
+		return bridge.output.getMeta().next(meta -> {
 			var out = Path.join([meta.path, image.path]);
 			switch image.size {
 				case Full:
-					app.fs.file(image.source)
+					bridge.fs.file(image.source)
 						.copy(out)
 						.next(_ -> Task.nothing());
 				case Constrain(side, size):
