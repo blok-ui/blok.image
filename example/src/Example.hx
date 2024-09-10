@@ -11,13 +11,14 @@ function main() {
 			new StaticHtml({
 				strategy: DirectoryWithIndexHtmlFile
 			}),
-			// new ClientApp({
-			// 	flags: ['-dce full', '-D analyzer-optimize'],
-			// 	dependencies: InheritDependencies
-			// }),
+			new ClientApp({
+				flags: ['-dce full', '-D analyzer-optimize'],
+				dependencies: InheritDependencies
+			}),
 			new ProcessImages({
 				engine: Vips
-			})
+			}),
+			new Logging()
 		])
 		.generate(() -> ImageExample.node({}))
 		.handle(result -> switch result {

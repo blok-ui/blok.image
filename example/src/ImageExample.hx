@@ -22,6 +22,9 @@ class ImageExample extends Component {
 					size: ImageSize.Full,
 					alt: 'test'
 				}))
+				.child(LoadingImage.node({
+					src: 'example/data/images/test.png'
+				}))
 			);
 	}
 }

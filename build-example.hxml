@@ -4,7 +4,6 @@
 -lib blok.image
 -lib kit.file
 
--D analyzer-optimize
 -dce full
 --debug
 
