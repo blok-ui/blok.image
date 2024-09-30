@@ -71,6 +71,7 @@ class ProcessImages extends Structure implements Plugin {
 						.copy(out)
 						.next(_ -> Task.nothing());
 				case Constrain(side, size):
+					// @todo: figure out how to actually constrain a side
 					image.source.process(out, {
 						engine: engine,
 						width: size,
